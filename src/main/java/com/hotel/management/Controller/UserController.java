@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,7 @@ import com.hotel.management.Dto.AuthenticationRequest;
 import com.hotel.management.Dto.AuthenticationResponse;
 import com.hotel.management.Dto.SignUpRequest;
 import com.hotel.management.Dto.UserDto;
+import com.hotel.management.Dto.hotelDto;
 import com.hotel.management.Entity.Hotel;
 import com.hotel.management.Entity.User;
 import com.hotel.management.JwtUtils.JwtUtils;
@@ -98,10 +100,21 @@ public class UserController {
 		return authenticationResponse;
 	}
 	
-	@GetMapping("/All-hotel-list")
+	@GetMapping("All-hotel-list")
 	public ResponseEntity<List<Hotel>> getAllHotelList()
 	{
 		List<Hotel> dto=this.hotelService.getAllHotel();
 		return ResponseEntity.status(HttpStatus.OK).body(dto);
 	}
+	
+	@GetMapping("get-hotel-by-id/{hotelId}")
+	public ResponseEntity<hotelDto> getHotelDetails(@PathVariable("hotelId") String hotelId) {
+	    hotelDto dto = this.hotelService.getHotelByHotelId(hotelId);
+	    if (dto != null) {
+	        return ResponseEntity.ok(dto);
+	    } else {
+	        return ResponseEntity.notFound().build();
+	    }
+	}
+
 }

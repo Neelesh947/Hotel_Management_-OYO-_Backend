@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hotel.management.Dto.BookAHotelDto;
 import com.hotel.management.Dto.hotelDto;
+import com.hotel.management.Entity.AdminBookingListDto;
 import com.hotel.management.Entity.Category;
 import com.hotel.management.Entity.Hotel;
 import com.hotel.management.Service.CategoryService;
@@ -66,4 +68,16 @@ public class AdminController {
 		List<Hotel> dto=this.hotelService.getAllHotelWithUserId();
 		return ResponseEntity.status(HttpStatus.OK).body(dto);
 	}	
+	
+	@GetMapping("/hotel/booking/{userId}")
+	public ResponseEntity<List<BookAHotelDto>> getBookingByUserId(@PathVariable String userId)
+	{
+		List<BookAHotelDto> booklist=hotelService.getBookingByUserId(userId);
+		return ResponseEntity.status(HttpStatus.OK).body(booklist);
+	}
+	
+	@GetMapping("/bookings")
+    public List<AdminBookingListDto> getAllAdminBookings() {
+        return hotelService.findAllData();
+    }
 }
